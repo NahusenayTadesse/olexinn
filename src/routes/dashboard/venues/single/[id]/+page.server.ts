@@ -1,7 +1,7 @@
 import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
-import { edit, editGallery } from './schema';
+import { edit } from './schema';
 
 import { db } from '$lib/server/db';
 import { venues as products } from '$lib/server/db/schema';

@@ -17,35 +17,27 @@
 
 	const navigation = [
 		{
-			title: 'Content',
-			description: 'Blogs and client testimonials',
-			color: 'border-l-amber-500',
-			links: [
-				{ name: 'Blog', href: '/blog', icon: Newspaper },
-				{ name: 'Testimonials', href: '/testimonials', icon: Quote },
-				{ name: 'Partner Logos', href: '/logos', icon: Image }
-			]
-		},
-		{
 			title: 'Operations',
-			description: 'Events, Venues, and Services',
+			description: 'Events, Venues, Images and Brochure',
 			color: 'border-l-emerald-500',
 			span: 'md:col-span-2',
 			links: [
 				{ name: 'Events', href: '/events', icon: Calendar },
 				{ name: 'Venues', href: '/venues', icon: MapPin },
-				{ name: 'Services', href: '/services', icon: Briefcase }
+				{ name: 'Images', href: '/images', icon: Image },
+				{ name: 'Brochures', href: '/brochures', icon: MessageSquare }
 			]
 		},
 		{
 			title: 'Sales & CRM',
-			description: 'Orders, Quotes, and Inquiries',
+			description: 'Messages and Bookings',
 			color: 'border-l-rose-500',
 			links: [
-				{ name: 'Quotes', href: '/quotes', icon: Quote },
+				{ name: 'Bookings', href: '/bookings', icon: Calendar },
 				{ name: 'Messages', href: '/messages', icon: MessageSquare }
 			]
 		},
+
 		{
 			title: 'User Management',
 			description: 'Manage system access and permissions',
@@ -60,7 +52,7 @@
 	<meta name="description" content="Dashboard for Olex Inn" />
 </svelte:head>
 
-<div class="grid grid-cols-1 gap-6 p-6 md:grid-cols-2 lg:grid-cols-1">
+<div class="grid grid-cols-1 gap-6 p-6 md:grid-cols-1 lg:grid-cols-1">
 	{#each navigation as section (section.title)}
 		<Card.Root
 			class="group overflow-hidden border-l-4 {section.color} transition-all hover:shadow-lg {section.span ??
@@ -70,7 +62,7 @@
 				<Card.Title class="text-xl">{section.title}</Card.Title>
 				<Card.Description>{section.description}</Card.Description>
 			</Card.Header>
-			<Card.Content class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+			<Card.Content class="grid grid-cols-1 gap-3 sm:grid-cols-3">
 				{#each section.links as link (link.name)}
 					<a
 						href="/dashboard{link.href}"
@@ -80,8 +72,6 @@
 						<span class="text-xs font-medium">{link.name}</span>
 					</a>
 				{/each}
-
-				<!-- Quick Add Action -->
 			</Card.Content>
 		</Card.Root>
 	{/each}

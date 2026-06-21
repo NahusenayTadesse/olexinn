@@ -49,6 +49,11 @@
 			icon: Mail
 		},
 		{
+			title: 'Brochure',
+			url: '/dashboard/brochure',
+			icon: Book
+		},
+		{
 			title: 'Images',
 			url: '/dashboard/images',
 			icon: Images

@@ -31,17 +31,17 @@
 
 <main class="container mx-auto w-full! space-y-8 p-4">
 	<div class="border-b pb-4">
-		<h1 class="text-3xl font-bold tracking-tight">Partner Company Logos</h1>
-		<p class="text-muted-foreground">Manage Partner Company Logos</p>
+		<h1 class="text-3xl font-bold tracking-tight">Home Page Images</h1>
+		<p class="text-muted-foreground">Manage Home Page images</p>
 	</div>
 
 	<section class="space-y-4 lg:col-span-7">
 		<div class="flex items-center gap-2 text-lg font-semibold">
 			<ImageIcon class="h-5 w-5 text-primary" />
-			<h2>Logo Images</h2>
+			<h2>Home Page Images</h2>
 		</div>
 
-		<FormCard title="Logo Images: ({images.length})" className="w-full shadow-sm border">
+		<FormCard title="Home Page Images: ({images.length})" className="w-full shadow-sm border">
 			<form method="post" action="?/editGallery" use:enhance enctype="multipart/form-data">
 				<InputComp label="" name="existing" type="hidden" {form} {errors} required={true} />
 				<InputComp

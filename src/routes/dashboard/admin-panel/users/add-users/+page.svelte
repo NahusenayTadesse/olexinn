@@ -81,15 +81,6 @@
 				required
 				type="password"
 			/>
-			<InputComp
-				{form}
-				{errors}
-				name="role"
-				type="select"
-				label="Role"
-				items={data?.allRoles}
-				required
-			/>
 
 			<Button type="submit" class="mt-4" form="main">
 				{#if $delayed}

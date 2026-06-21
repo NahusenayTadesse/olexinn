@@ -3,8 +3,8 @@ import { zod4 } from 'sveltekit-superforms/adapters';
 import { editUserSchema as schema } from './schema';
 
 import { db } from '$lib/server/db';
-import { roles, user, permissions, rolePermissions, session } from '$lib/server/db/schema';
-import { eq, and, sql } from 'drizzle-orm';
+import { user, session } from '$lib/server/db/schema';
+import { eq } from 'drizzle-orm';
 import type { Actions, PageServerLoad } from './$types';
 import { fail } from 'sveltekit-superforms';
 import { setFlash } from 'sveltekit-flash-message/server';
@@ -43,7 +43,7 @@ export const load: PageServerLoad = async ({ params }) => {
 // import { saveUploadedFile } from '$lib/server/upload';
 
 export const actions: Actions = {
-	editUser: async ({ request, cookies, locals, params }) => {
+	editUser: async ({ request, cookies, params }) => {
 		const form = await superValidate(request, zod4(schema));
 
 		const { id } = params;

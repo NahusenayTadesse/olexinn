@@ -109,9 +109,11 @@
 			team. Each event is delivered with care while preserving the character and energy the bar is
 			known for.
 		</p>
-		<a href="mailto:events@olexinn.co.uk?subject=Hire%20Enquiry" class="btn-outline"
-			>Download Brochure</a
-		>
+		{#if data?.brochure}
+			<a href="/files/{data.brochure}" download="Olex Inn Brochure" class="btn-outline"
+				>Download Brochure</a
+			>
+		{/if}
 	</div>
 </div>
 

@@ -19,7 +19,7 @@
 		>
 			<Sidebar.Trigger class="rounded-lg bg-white p-4 dark:bg-black" />
 			<div class="flex flex-row items-center gap-4">
-				<Search />
+				<!-- <Search /> -->
 				<DarkMode />
 				<AvatarSettings data={data?.name} />
 			</div>

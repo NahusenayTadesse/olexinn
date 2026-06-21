@@ -107,7 +107,7 @@ export const actions: Actions = {
 					description,
 					imageUrl: uploadedImageUrl // Saved file path/URL string goes here
 				})
-				.returning();
+				.$returningId();
 
 			await tx
 				.insert(eventGenres)

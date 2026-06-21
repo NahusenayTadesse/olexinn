@@ -45,6 +45,7 @@ export const edit = z.object({
 	slug: z.string().min(1, 'Slug is required'),
 
 	description: z.string().nullable().optional(),
+	genres: z.array(z.number().int().positive()).min(1, 'At least one genre is required'),
 
 	imageUrl: z.file().max(10000000).nullable().optional()
 });

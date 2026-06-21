@@ -4,15 +4,17 @@ import { eq } from 'drizzle-orm';
 
 import { hireSchema } from './schema.js';
 import { db } from '$lib/server/db';
-import { venueBooking } from '$lib/server/db/schema';
+import { venueBooking, brochure } from '$lib/server/db/schema';
 import type { Actions } from './$types.js';
 import type { PageServerLoad } from './$types.js';
 
 export const load: PageServerLoad = async () => {
 	const form = await superValidate(zod4(hireSchema));
+	const [brochures] = await db.select().from(brochure).limit(1);
 
 	return {
-		form
+		form,
+		brochure: brochures.brochure
 	};
 };
 
