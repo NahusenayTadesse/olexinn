@@ -56,8 +56,7 @@ export const load = loadFlash(async () => {
 			entryNote: events.entryNote,
 			ticketUrl: events.ticketUrl
 		})
-		.from(events)
-		.limit(8);
+		.from(events);
 
 	const genresWithEvents = await db
 		.select({

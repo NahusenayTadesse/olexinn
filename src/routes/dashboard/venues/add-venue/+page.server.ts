@@ -41,18 +41,21 @@ export const actions: Actions = {
 		}
 		const result = await db.transaction(async (tx) => {
 			// 2. Insert the main event row
-			await tx.insert(venues).values({
-				name,
-				capacity,
-				hours,
-				address,
-				format,
-				live,
-				description,
-				imgUrl: uploadedImageUrl
-			});
+			const [newId] = await tx
+				.insert(venues)
+				.values({
+					name,
+					capacity,
+					hours,
+					address,
+					format,
+					live,
+					description,
+					imgUrl: uploadedImageUrl
+				})
+				.$returningId();
 
-			return true;
+			return newId.id;
 		});
 
 		if (!result) {

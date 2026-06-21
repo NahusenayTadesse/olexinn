@@ -119,7 +119,7 @@
 <ModeWatcher />
 <Toaster position="bottom-right" richColors closeButton />
 <ProgressBar color="#c9902a" zIndex={1000} />
-{#if !page.url.pathname.includes('/dashboard')}
+{#if !page.url.pathname.includes('/dashboard') && page.url.pathname !== '/login'}
 	<nav class="nav">
 		<div class="nav-inner">
 			<ul class="nav-links" id="nav-left">

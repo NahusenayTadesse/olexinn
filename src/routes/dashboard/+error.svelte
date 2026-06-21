@@ -13,7 +13,7 @@
 </script>
 
 <svelte:head>
-	<title>{status} | Yebehir Ventures</title>
+	<title>{status} | Ollexinn </title>
 </svelte:head>
 
 <div class="relative min-h-dvh w-full overflow-hidden bg-background transition-colors duration-300">
@@ -75,11 +75,11 @@
 			<p class="text-sm text-muted-foreground italic">Need immediate assistance with an event?</p>
 			<div class="flex flex-wrap justify-center gap-8">
 				<a
-					href="mailto:contact@yebehir.com"
+					href="mailto:contact@ollexinn.com"
 					class="flex items-center gap-2 text-sm font-medium text-foreground transition-colors hover:text-primary"
 				>
 					<MailIcon class="size-4" />
-					contact@yebehir.com
+					contact@ollexinn.com
 				</a>
 				<a
 					href="/contact"
@@ -94,7 +94,7 @@
 
 	<footer class="absolute bottom-8 w-full text-center">
 		<p class="text-xs font-bold tracking-[0.2em] text-muted-foreground/50 uppercase">
-			Yebehir Ventures • Ahead of the Curve
+			Ollexinn
 		</p>
 	</footer>
 </div>

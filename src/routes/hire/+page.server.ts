@@ -1,6 +1,5 @@
-import { superValidate, message, fail } from 'sveltekit-superforms';
+import { superValidate, message } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
-import { eq } from 'drizzle-orm';
 
 import { hireSchema } from './schema.js';
 import { db } from '$lib/server/db';
@@ -14,7 +13,7 @@ export const load: PageServerLoad = async () => {
 
 	return {
 		form,
-		brochure: brochures.brochure
+		brochure: brochures?.brochure ?? null
 	};
 };
 

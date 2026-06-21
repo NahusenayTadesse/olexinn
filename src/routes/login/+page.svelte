@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Login from '$lib/forms/Login.svelte';
-
 	import type { ActionData, PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();

@@ -78,7 +78,7 @@
 			{/if}
 		</Button>
 
-		<Delete redirect="/dashboard/events" />
+		<Delete redirect="/dashboard/venues" />
 	</div>
 
 	{#if editForm === false}

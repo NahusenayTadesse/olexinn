@@ -1,7 +1,7 @@
 <script>
 	import '$lib/css/style.css';
 	import Errors from '$lib/formComponents/Errors.svelte';
-	import { Loader, Plus, SendIcon, Trash2 } from '@lucide/svelte';
+	import { Loader } from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';
 	import { superForm } from 'sveltekit-superforms/client';
 
@@ -9,11 +9,7 @@
 
 	const { form, errors, enhance, delayed, allErrors } = superForm(data.form, {
 		dataType: 'json',
-		onChange(event) {
-			if (event.paths.includes('name')) {
-				$form.id = $form.name.toLowerCase().replace(/\s+/g, '-');
-			}
-		},
+
 		onUpdated({ form }) {
 			if (form.message) {
 				if (form.message.type === 'error') {
@@ -110,7 +106,7 @@
 			known for.
 		</p>
 		{#if data?.brochure}
-			<a href="/files/{data.brochure}" download="Olex Inn Brochure" class="btn-outline"
+			<a href="/files/{data?.brochure}" download="Olex Inn Brochure" class="btn-outline"
 				>Download Brochure</a
 			>
 		{/if}
@@ -358,7 +354,7 @@
 				{@render field('Email', 'email', 'email', 'jane@example.com', true)}
 				{@render field('Phone', 'phone', 'tel', '+44 7700 000000', true)}
 				<div style="margin-bottom:1.75rem;">
-					<label class="form-label">Event Type</label>
+					<label for="eventType" class="form-label">Event Type</label>
 					<select bind:value={$form.eventType} name="eventType" class="form-field" required>
 						<option value="" disabled selected>Select an option</option>
 						<option>Private Party</option>
