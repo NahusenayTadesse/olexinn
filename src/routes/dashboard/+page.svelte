@@ -56,8 +56,8 @@
 </script>
 
 <svelte:head>
-	<title>Dashboard - Yebehir</title>
-	<meta name="description" content="Dashboard for Yebehir" />
+	<title>Dashboard - Olex Inn</title>
+	<meta name="description" content="Dashboard for Olex Inn" />
 </svelte:head>
 
 <div class="grid grid-cols-1 gap-6 p-6 md:grid-cols-2 lg:grid-cols-1">

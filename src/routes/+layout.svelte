@@ -13,6 +13,7 @@
 	import { ModeWatcher } from 'mode-watcher';
 
 	import { toast } from 'svelte-sonner';
+	import { onMount } from 'svelte';
 
 	async function notifyBrowser(title: string, body: string) {
 		if (!('Notification' in window)) return; // Safari iOS etc.
@@ -102,6 +103,15 @@
 
 	function closeMobileNav() {
 		navOpen = false;
+	}
+
+	onMount(() => {
+		cookiePreference = localStorage.getItem('olex-cookies');
+	});
+
+	function saveCookiePreference(value) {
+		localStorage.setItem('olex-cookies', value);
+		cookiePreference = value;
 	}
 </script>
 

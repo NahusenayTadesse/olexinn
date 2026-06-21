@@ -31,6 +31,11 @@
 			url: '/dashboard/events',
 			icon: Briefcase
 		},
+		{
+			title: 'Venues',
+			url: '/dashboard/venues',
+			icon: MapPin
+		},
 
 		{
 			title: 'Bookings',
@@ -42,6 +47,11 @@
 			title: 'Messages',
 			url: '/dashboard/messages',
 			icon: Mail
+		},
+		{
+			title: 'Images',
+			url: '/dashboard/images',
+			icon: Images
 		},
 		{
 			title: 'Admin Panel',

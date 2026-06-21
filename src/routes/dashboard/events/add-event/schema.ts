@@ -1,8 +1,6 @@
 import { z } from 'zod';
 
 export const add = z.object({
-	id: z.number().int().positive().optional(), // Optional because it auto-increments on insert
-
 	title: z.string().min(1, 'Title is required'),
 
 	eventDate: z.string().optional(), // Expects ISO string or formatted date text
@@ -27,7 +25,7 @@ export const add = z.object({
 
 	currency: z.string().default('GBP'),
 
-	ticketUrl: z.string().url().nullable().optional(),
+	ticketUrl: z.url().nullable().optional(),
 
 	isLive: z.boolean().default(false),
 

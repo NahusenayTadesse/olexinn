@@ -116,119 +116,147 @@
 </div>
 
 <!-- ══ IMAGE GRID ════════════════════════════ -->
-<div class="container" style="padding-bottom:5rem;">
-	<div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:3px;margin-bottom:3px;">
-		<div class="img-placeholder" style="height:clamp(200px,32vw,420px);">
-			<!-- Hero venue shot -->
+{#if data?.gallery?.length}
+	<div class="container" style="padding-bottom:5rem;">
+		<div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:3px;margin-bottom:3px;">
+			<div class="img-placeholder" style="height:clamp(200px,32vw,420px);">
+				{#if data.gallery[0]}
+					<img
+						src="/files/{data.gallery[0]}"
+						loading="lazy"
+						alt="Olex Inn venue"
+						class="img-fluid"
+					/>
+				{/if}
+			</div>
+
+			<div style="display:grid;grid-template-rows:1fr 1fr;gap:3px;">
+				<div class="img-placeholder">
+					{#if data.gallery[1]}
+						<img
+							src="/files/{data.gallery[1]}"
+							loading="lazy"
+							alt="Olex Inn crowd"
+							class="img-fluid"
+						/>
+					{/if}
+				</div>
+
+				<div class="img-placeholder">
+					{#if data.gallery[2]}
+						<img
+							src="/files/{data.gallery[2]}"
+							loading="lazy"
+							alt="Olex Inn bar detail"
+							class="img-fluid"
+						/>
+					{/if}
+				</div>
+			</div>
+
+			<div style="display:grid;grid-template-rows:1fr 1fr;gap:3px;">
+				<div class="img-placeholder">
+					{#if data.gallery[3]}
+						<img
+							src="/files/{data.gallery[3]}"
+							loading="lazy"
+							alt="Olex Inn stage"
+							class="img-fluid"
+						/>
+					{/if}
+				</div>
+
+				<div class="img-placeholder">
+					{#if data.gallery[4]}
+						<img
+							src="/files/{data.gallery[4]}"
+							loading="lazy"
+							alt="Olex Inn interior"
+							class="img-fluid"
+						/>
+					{/if}
+				</div>
+			</div>
 		</div>
-		<div style="display:grid;grid-template-rows:1fr 1fr;gap:3px;">
-			<div class="img-placeholder"><!-- Crowd shot --></div>
-			<div class="img-placeholder"><!-- Bar detail --></div>
-		</div>
-		<div style="display:grid;grid-template-rows:1fr 1fr;gap:3px;">
-			<div class="img-placeholder"><!-- Stage --></div>
-			<div class="img-placeholder"><!-- Interior --></div>
+
+		<div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;">
+			{#if data.gallery[5]}
+				<div class="img-placeholder" style="height:clamp(140px,20vw,240px);">
+					<img
+						src="/files/{data.gallery[5]}"
+						loading="lazy"
+						alt="Olex Inn dance floor"
+						class="img-fluid"
+					/>
+				</div>
+			{/if}
+			{#if data.gallery[6]}
+				<div class="img-placeholder" style="height:clamp(140px,20vw,240px);">
+					<img
+						src="/files/{data.gallery[6]}"
+						loading="lazy"
+						alt="Olex Inn event night"
+						class="img-fluid"
+					/>
+				</div>
+			{/if}
 		</div>
 	</div>
-	<div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;">
-		<div class="img-placeholder" style="height:clamp(140px,20vw,240px);">
-			<!-- Dance floor -->
-		</div>
-		<div class="img-placeholder" style="height:clamp(140px,20vw,240px);">
-			<!-- Event night -->
-		</div>
-	</div>
-</div>
+{/if}
 
 <!-- ══ VENUE SPACES ════════════════════════════ -->
 <div class="container" style="padding-bottom:5rem;">
 	<span class="eyebrow" style="margin-bottom:2.5rem;">Venue Spaces</span>
-
-	<div class="space-row">
-		<div class="img-placeholder" style="height:clamp(200px,28vw,320px);">
-			<!-- Main bar photo -->
-		</div>
-		<div>
-			<h2 style="font-size:clamp(1.75rem,4vw,2.75rem);line-height:1;margin-bottom:1rem;">
-				Main Bar
-			</h2>
-			<p
-				style="color:var(--zinc-400);font-weight:300;font-size:0.9rem;line-height:1.85;margin-bottom:2rem;max-width:28rem;"
-			>
-				Ground floor bar and lounge. Full drinks service, DJ-ready setup and open standing space.
-				The anchor of any night — walk in, no fuss, full energy.
-			</p>
-			<p class="eyebrow" style="margin-bottom:1rem;">Room Specifications</p>
-			<div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
-				<div class="spec-box">
-					<span class="spec-label">Capacity</span><span class="spec-value">120</span>
-				</div>
-				<div class="spec-box">
-					<span class="spec-label">Format</span><span class="spec-value">Walk-in</span>
-				</div>
-				<div class="spec-box">
-					<span class="spec-label">Hours</span><span class="spec-value">Until 4AM</span>
+	{#each data.venues as venue (venue.id)}
+		<div class="space-row">
+			<div class="img-placeholder" style="height:clamp(200px,28vw,320px);">
+				{#if venue.imgUrl}
+					<img
+						src="/files/{venue.imgUrl}"
+						loading="lazy"
+						alt="Olex Inn {venue.name}"
+						class="img-fluid"
+					/>
+				{/if}
+			</div>
+			<div>
+				<h2 style="font-size:clamp(1.75rem,4vw,2.75rem);line-height:1;margin-bottom:1rem;">
+					{venue.name}
+				</h2>
+				<p
+					style="color:var(--zinc-400);font-weight:300;font-size:0.9rem;line-height:1.85;margin-bottom:2rem;max-width:28rem;"
+				>
+					{venue.description}
+				</p>
+				<p class="eyebrow" style="margin-bottom:1rem;">Room Specifications</p>
+				<div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+					{#if venue.capacity}
+						<div class="spec-box">
+							<span class="spec-label">Capacity</span><span class="spec-value"
+								>{venue.capacity}</span
+							>
+						</div>
+					{/if}
+					{#if venue.format}
+						<div class="spec-box">
+							<span class="spec-label">Format</span><span class="spec-value">{venue.format}</span>
+						</div>
+					{/if}
+					{#if venue.hours}
+						<div class="spec-box">
+							<span class="spec-label">Hours</span><span class="spec-value">{venue.hours}</span>
+						</div>
+					{/if}
+					{#if venue.live}
+						<div class="spec-box">
+							<span class="spec-label">Live</span><span class="spec-value">YES</span>
+						</div>
+					{/if}
 				</div>
 			</div>
 		</div>
-	</div>
-
-	<div class="space-row">
-		<div class="img-placeholder" style="height:clamp(200px,28vw,320px);">
-			<!-- Events floor photo -->
-		</div>
-		<div>
-			<h2 style="font-size:clamp(1.75rem,4vw,2.75rem);line-height:1;margin-bottom:1rem;">
-				Events Floor
-			</h2>
-			<p
-				style="color:var(--zinc-400);font-weight:300;font-size:0.9rem;line-height:1.85;margin-bottom:2rem;max-width:28rem;"
-			>
-				Dedicated event space with full sound setup, DJ booth and bar. Used for ticketed nights —
-				Afrobeats, Hip Hop, R&B. Available for private hire and brand-led activations.
-			</p>
-			<p class="eyebrow" style="margin-bottom:1rem;">Room Specifications</p>
-			<div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
-				<div class="spec-box">
-					<span class="spec-label">Capacity</span><span class="spec-value">200+</span>
-				</div>
-				<div class="spec-box">
-					<span class="spec-label">Format</span><span class="spec-value">Ticketed / Hire</span>
-				</div>
-				<div class="spec-box">
-					<span class="spec-label">Live</span><span class="spec-value">Yes</span>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="space-row">
-		<div class="img-placeholder" style="height:clamp(200px,28vw,320px);">
-			<!-- Private room photo -->
-		</div>
-		<div>
-			<h2 style="font-size:clamp(1.75rem,4vw,2.75rem);line-height:1;margin-bottom:1rem;">
-				Private Room
-			</h2>
-			<p
-				style="color:var(--zinc-400);font-weight:300;font-size:0.9rem;line-height:1.85;margin-bottom:2rem;max-width:28rem;"
-			>
-				Separate room for artist or guest use. Ideal for pre-event hosting, brand activations or
-				exclusive group access. Private bar and bathroom included.
-			</p>
-			<p class="eyebrow" style="margin-bottom:1rem;">Room Specifications</p>
-			<div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
-				<div class="spec-box">
-					<span class="spec-label">Capacity</span><span class="spec-value">30</span>
-				</div>
-				<div class="spec-box">
-					<span class="spec-label">Format</span><span class="spec-value">Private</span>
-				</div>
-			</div>
-		</div>
-	</div>
+	{/each}
 </div>
-
 <!-- ══ BOOKING FORM ════════════════════════════ -->
 <div class="container" style="padding-bottom:6rem;">
 	<div class="grid-2" style="gap:5rem;align-items:start;">

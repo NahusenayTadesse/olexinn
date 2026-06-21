@@ -140,3 +140,21 @@ export const venueBooking = sqliteTable('venue_booking', {
 	status: text({ length: 50 }).default('pending'),
 	...timestamps()
 });
+
+export const images = sqliteTable('images', {
+	mainImage: text(),
+	imgURL: text()
+});
+
+export const venues = sqliteTable('venues', {
+	id: integer().primaryKey({ autoIncrement: true }),
+	name: text({ length: 255 }).notNull(),
+	description: text(),
+	capacity: integer(),
+	format: text(),
+	imgUrl: text(),
+	hours: text(),
+	address: text(),
+	live: integer({ mode: 'boolean' }).default(false),
+	...timestamps()
+});

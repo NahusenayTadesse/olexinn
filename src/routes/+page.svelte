@@ -1,57 +1,57 @@
 <script>
-	import { onMount } from 'svelte';
 	import '$lib/css/style.css';
+	let { data } = $props();
 
-	const events = [
-		{
-			day: 'Thu',
-			num: '24',
-			mon: 'Jul',
-			title: 'Jazz & Soul Night',
-			meta: 'Live performance · Doors 8PM · Free before 9PM',
-			tag: 'Free',
-			tagClass: 'free'
-		},
-		{
-			day: 'Fri',
-			num: '25',
-			mon: 'Jul',
-			title: 'Afrobeats Friday',
-			meta: 'DJ Night · Doors 9PM · Until 4AM',
-			tag: 'Ticketed · £10',
-			tagClass: 'ticketed',
-			ticketHref: '/events'
-		},
-		{
-			day: 'Sat',
-			num: '26',
-			mon: 'Jul',
-			title: 'Hip Hop Saturdays',
-			meta: 'DJ Night · Doors 10PM · Until 4AM',
-			tag: 'Ticketed · £12',
-			tagClass: 'ticketed',
-			ticketHref: '/events'
-		},
-		{
-			day: 'Tue',
-			num: '29',
-			mon: 'Jul',
-			title: 'Open Mic Night',
-			meta: 'Live performances · Doors 7PM · Walk in welcome',
-			tag: 'Free',
-			tagClass: 'free'
-		},
-		{
-			day: 'Sat',
-			num: '02',
-			mon: 'Aug',
-			title: 'R&B & Dancehall Night',
-			meta: 'DJ Night · Doors 9PM · Until 4AM',
-			tag: 'Ticketed · £10',
-			tagClass: 'ticketed',
-			ticketHref: '/events'
-		}
-	];
+	// const events = [
+	// 	{
+	// 		day: 'Thu',
+	// 		num: '24',
+	// 		mon: 'Jul',
+	// 		title: 'Jazz & Soul Night',
+	// 		meta: 'Live performance · Doors 8PM · Free before 9PM',
+	// 		tag: 'Free',
+	// 		tagClass: 'free'
+	// 	},
+	// 	{
+	// 		day: 'Fri',
+	// 		num: '25',
+	// 		mon: 'Jul',
+	// 		title: 'Afrobeats Friday',
+	// 		meta: 'DJ Night · Doors 9PM · Until 4AM',
+	// 		tag: 'Ticketed · £10',
+	// 		tagClass: 'ticketed',
+	// 		ticketHref: '/events'
+	// 	},
+	// 	{
+	// 		day: 'Sat',
+	// 		num: '26',
+	// 		mon: 'Jul',
+	// 		title: 'Hip Hop Saturdays',
+	// 		meta: 'DJ Night · Doors 10PM · Until 4AM',
+	// 		tag: 'Ticketed · £12',
+	// 		tagClass: 'ticketed',
+	// 		ticketHref: '/events'
+	// 	},
+	// 	{
+	// 		day: 'Tue',
+	// 		num: '29',
+	// 		mon: 'Jul',
+	// 		title: 'Open Mic Night',
+	// 		meta: 'Live performances · Doors 7PM · Walk in welcome',
+	// 		tag: 'Free',
+	// 		tagClass: 'free'
+	// 	},
+	// 	{
+	// 		day: 'Sat',
+	// 		num: '02',
+	// 		mon: 'Aug',
+	// 		title: 'R&B & Dancehall Night',
+	// 		meta: 'DJ Night · Doors 9PM · Until 4AM',
+	// 		tag: 'Ticketed · £10',
+	// 		tagClass: 'ticketed',
+	// 		ticketHref: '/events'
+	// 	}
+	// ];
 
 	const tickerItems = [
 		'Finsbury Park',
@@ -62,6 +62,7 @@
 		'Near Emirates Stadium'
 	];
 
+	const events = $derived(data?.eventList);
 	const barSpecs = [
 		{ label: 'Open Until', value: '4AM' },
 		{ label: 'Spend', value: '£10–20' },
@@ -75,16 +76,98 @@
 		{ label: 'Entry', value: 'Walk In' }
 	];
 
-	const galleryItems = ['crowd', 'performer', 'bar detail', 'late night'];
+	// const galleryItems = ['crowd', 'performer', 'bar detail', 'late night'];
 
-	onMount(() => {
-		cookiePreference = localStorage.getItem('olex-cookies');
+	let sliderContainer = $state(null);
+	let animationFrame = $state(null);
+	let isPaused = $state(false);
+	let isDragging = $state(false);
+	let startX = $state(0);
+	let startScrollLeft = $state(0);
+
+	const galleryItems = $derived(data?.gallery ?? []);
+	const extendedItems = $derived([...galleryItems, ...galleryItems]);
+
+	const sliderSpeed = 0.35;
+
+	const prefersReducedMotion =
+		typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	$effect(() => {
+		const container = sliderContainer;
+
+		if (!container || galleryItems.length <= 1 || prefersReducedMotion) return;
+
+		const animate = () => {
+			if (!isPaused && !isDragging) {
+				container.scrollLeft += sliderSpeed;
+
+				const loopPoint = container.scrollWidth / 2;
+
+				if (container.scrollLeft >= loopPoint) {
+					container.scrollLeft -= loopPoint;
+				}
+			}
+
+			animationFrame = requestAnimationFrame(animate);
+		};
+
+		const pause = () => {
+			isPaused = true;
+		};
+
+		const resume = () => {
+			isPaused = false;
+		};
+
+		const handlePointerDown = (event) => {
+			isDragging = true;
+			isPaused = true;
+			startX = event.clientX;
+			startScrollLeft = container.scrollLeft;
+			container.setPointerCapture?.(event.pointerId);
+		};
+
+		const handlePointerMove = (event) => {
+			if (!isDragging) return;
+
+			const distance = event.clientX - startX;
+			container.scrollLeft = startScrollLeft - distance;
+		};
+
+		const handlePointerUp = () => {
+			isDragging = false;
+			isPaused = false;
+		};
+
+		container.addEventListener('mouseenter', pause);
+		container.addEventListener('mouseleave', resume);
+		container.addEventListener('focusin', pause);
+		container.addEventListener('focusout', resume);
+
+		container.addEventListener('pointerdown', handlePointerDown);
+		container.addEventListener('pointermove', handlePointerMove);
+		container.addEventListener('pointerup', handlePointerUp);
+		container.addEventListener('pointercancel', handlePointerUp);
+		container.addEventListener('pointerleave', handlePointerUp);
+
+		animationFrame = requestAnimationFrame(animate);
+
+		return () => {
+			cancelAnimationFrame(animationFrame);
+
+			container.removeEventListener('mouseenter', pause);
+			container.removeEventListener('mouseleave', resume);
+			container.removeEventListener('focusin', pause);
+			container.removeEventListener('focusout', resume);
+
+			container.removeEventListener('pointerdown', handlePointerDown);
+			container.removeEventListener('pointermove', handlePointerMove);
+			container.removeEventListener('pointerup', handlePointerUp);
+			container.removeEventListener('pointercancel', handlePointerUp);
+			container.removeEventListener('pointerleave', handlePointerUp);
+		};
 	});
-
-	function saveCookiePreference(value) {
-		localStorage.setItem('olex-cookies', value);
-		cookiePreference = value;
-	}
 </script>
 
 <svelte:head>
@@ -160,7 +243,7 @@
 			<a href="/events" class="btn-ghost">Full Programme →</a>
 		</div>
 
-		{#each events as event}
+		{#each events as event (event.id)}
 			<div class="event-row">
 				<div class="event-date-block">
 					<div class="event-date-day">{event.day}</div>
@@ -197,7 +280,11 @@
 <section class="section bg-dark" id="the-bar">
 	<div class="container">
 		<div class="grid-2" style="align-items:center;gap:4rem;">
-			<div class="img-placeholder" style="height:clamp(280px,40vw,480px);"></div>
+			<div class={data?.mainImage ? '' : 'img-placeholder'} style="height:clamp(280px,40vw,480px);">
+				{#if data?.mainImage}
+					<img src="/files/{data.mainImage}" loading="lazy" alt="Main" class="img-fluid" />
+				{/if}
+			</div>
 
 			<div>
 				<span class="eyebrow" style="margin-bottom:1.25rem;">The Bar</span>
@@ -231,19 +318,19 @@
 	</div>
 </section>
 
-<section style="padding:0;">
-	<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:3px;">
-		{#each galleryItems as item}
-			<div
-				class="img-placeholder"
-				style="height:clamp(120px,18vw,220px);"
-				aria-label={`Photo placeholder: ${item}`}
-			></div>
+<section class="gallery-slider" aria-label="Venue gallery">
+	<div bind:this={sliderContainer} class="gallery-track">
+		{#each extendedItems as item, index}
+			<figure class="gallery-card" aria-hidden={index >= galleryItems.length}>
+				{#if item}
+					<img src="/files/{item}" loading="lazy" alt="Olex Inn venue gallery" draggable="false" />
+				{/if}
+			</figure>
 		{/each}
 	</div>
 </section>
 
-<section class="section">
+<!-- <section class="section">
 	<div class="container">
 		<div class="grid-2" style="align-items:center;gap:4rem;">
 			<div>
@@ -289,7 +376,7 @@
 			<div class="img-placeholder" style="height:clamp(240px,35vw,380px);"></div>
 		</div>
 	</div>
-</section>
+</section> -->
 
 <section class="section bg-dark border-top border-bottom">
 	<div class="container" style="text-align:center;max-width:44rem;margin:0 auto;">
@@ -306,3 +393,87 @@
 		<a href="/hire" class="btn-gold">Enquire About Hire</a>
 	</div>
 </section>
+
+<style>
+	.gallery-slider {
+		width: 100%;
+		padding: clamp(1rem, 3vw, 2rem) 0;
+		overflow: hidden;
+		background: #0a0a0a;
+	}
+
+	.gallery-track {
+		display: flex;
+		gap: clamp(0.75rem, 2vw, 1.25rem);
+		overflow-x: auto;
+		padding: 0 clamp(1rem, 4vw, 3rem);
+		scrollbar-width: none;
+		cursor: grab;
+		user-select: none;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.gallery-track::-webkit-scrollbar {
+		display: none;
+	}
+
+	.gallery-track:active {
+		cursor: grabbing;
+	}
+
+	.gallery-track:focus-visible {
+		outline: 1px solid var(--gold);
+		outline-offset: 0.5rem;
+	}
+
+	.gallery-card {
+		position: relative;
+		flex: 0 0 clamp(220px, 28vw, 420px);
+		height: clamp(180px, 24vw, 320px);
+		margin: 0;
+		overflow: hidden;
+		border-radius: 1.1rem;
+		background: #18181b;
+		box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+	}
+
+	.gallery-card::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background:
+			linear-gradient(to top, rgba(0, 0, 0, 0.35), transparent 55%),
+			linear-gradient(to right, rgba(255, 255, 255, 0.08), transparent 35%);
+		pointer-events: none;
+	}
+
+	.gallery-card img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		transform: scale(1.03);
+		transition:
+			transform 500ms ease,
+			filter 500ms ease;
+	}
+
+	.gallery-card:hover img {
+		transform: scale(1.08);
+		filter: brightness(1.08);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.gallery-track {
+			scroll-snap-type: x mandatory;
+		}
+
+		.gallery-card {
+			scroll-snap-align: start;
+		}
+
+		.gallery-card img {
+			transition: none;
+		}
+	}
+</style>
