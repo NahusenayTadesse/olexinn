@@ -4,7 +4,7 @@ import { zod4 } from 'sveltekit-superforms/adapters';
 import { editGallery } from './schema';
 
 import { db } from '$lib/server/db';
-import { images as gallery } from '$lib/server/db/schema';
+import { heroImages as gallery } from '$lib/server/db/schema';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
@@ -12,11 +12,9 @@ export const load: PageServerLoad = async () => {
 
 	const images = await db.select().from(gallery);
 
-	const [mainImage] = await db.select({ mainImage: gallery.mainImage }).from(gallery).limit(1);
-
 	const imagesList = images.map((img) => img.imgURL);
 
-	return { form, gallery: imagesList, mainImage: mainImage?.mainImage };
+	return { form, gallery: imagesList };
 };
 
 import { saveUploadedFile } from '$lib/server/upload';
@@ -25,7 +23,7 @@ export const actions: Actions = {
 	editGallery: async ({ request }) => {
 		const form = await superValidate(request, zod4(editGallery));
 
-		const { existing, images, mainImage } = form.data;
+		const { existing, images } = form.data;
 
 		try {
 			let galleryImages: string[] = [];
@@ -35,17 +33,8 @@ export const actions: Actions = {
 				galleryImages = await uploadGallery(images);
 			}
 
-			const img = mainImage ? await saveUploadedFile(mainImage) : null;
-
 			await db.transaction(async (tx) => {
 				const old = existing.split(',');
-
-				const [oldMainImage] = await tx
-					.select({ mainImage: gallery.mainImage })
-					.from(gallery)
-					.limit(1);
-
-				const newMainImage = img ? img : oldMainImage;
 
 				const finalList = [...new Set([...old, ...galleryImages])].filter(
 					(item) => item && item.trim() !== ''
@@ -53,8 +42,7 @@ export const actions: Actions = {
 
 				if (finalList.length > 0) {
 					const imageRecords = finalList.map((url) => ({
-						mainImage: newMainImage,
-						imgURL: url
+						imgUrl: url
 					}));
 
 					await tx.delete(gallery);
@@ -65,9 +53,9 @@ export const actions: Actions = {
 				}
 			});
 
-			return message(form, { type: 'success', text: 'Images added Successfully!' });
+			return message(form, { type: 'success', text: 'Hero Images added Successfully!' });
 		} catch (err) {
-			console.error('Error adding Images:', err);
+			console.error('Error adding Hero Images:', err);
 			return message(
 				form,
 				{ type: 'error', text: `Unexpected Error: ${err?.message}` },

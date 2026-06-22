@@ -2,57 +2,6 @@
 	import '$lib/css/style.css';
 	let { data } = $props();
 
-	// const events = [
-	// 	{
-	// 		day: 'Thu',
-	// 		num: '24',
-	// 		mon: 'Jul',
-	// 		title: 'Jazz & Soul Night',
-	// 		meta: 'Live performance · Doors 8PM · Free before 9PM',
-	// 		tag: 'Free',
-	// 		tagClass: 'free'
-	// 	},
-	// 	{
-	// 		day: 'Fri',
-	// 		num: '25',
-	// 		mon: 'Jul',
-	// 		title: 'Afrobeats Friday',
-	// 		meta: 'DJ Night · Doors 9PM · Until 4AM',
-	// 		tag: 'Ticketed · £10',
-	// 		tagClass: 'ticketed',
-	// 		ticketHref: '/events'
-	// 	},
-	// 	{
-	// 		day: 'Sat',
-	// 		num: '26',
-	// 		mon: 'Jul',
-	// 		title: 'Hip Hop Saturdays',
-	// 		meta: 'DJ Night · Doors 10PM · Until 4AM',
-	// 		tag: 'Ticketed · £12',
-	// 		tagClass: 'ticketed',
-	// 		ticketHref: '/events'
-	// 	},
-	// 	{
-	// 		day: 'Tue',
-	// 		num: '29',
-	// 		mon: 'Jul',
-	// 		title: 'Open Mic Night',
-	// 		meta: 'Live performances · Doors 7PM · Walk in welcome',
-	// 		tag: 'Free',
-	// 		tagClass: 'free'
-	// 	},
-	// 	{
-	// 		day: 'Sat',
-	// 		num: '02',
-	// 		mon: 'Aug',
-	// 		title: 'R&B & Dancehall Night',
-	// 		meta: 'DJ Night · Doors 9PM · Until 4AM',
-	// 		tag: 'Ticketed · £10',
-	// 		tagClass: 'ticketed',
-	// 		ticketHref: '/events'
-	// 	}
-	// ];
-
 	const tickerItems = [
 		'Finsbury Park',
 		'Jazz · Afrobeats · Hip Hop · R&B · Live Music',
@@ -70,14 +19,6 @@
 		{ label: 'Entry', value: 'Walk In' }
 	];
 
-	const matchdaySpecs = [
-		{ label: 'Games From', value: '12PM' },
-		{ label: 'Distance', value: '7 Min Walk' },
-		{ label: 'Entry', value: 'Walk In' }
-	];
-
-	// const galleryItems = ['crowd', 'performer', 'bar detail', 'late night'];
-
 	let sliderContainer = $state(null);
 	let animationFrame = $state(null);
 	let isPaused = $state(false);
@@ -87,6 +28,7 @@
 
 	const galleryItems = $derived(data?.gallery ?? []);
 	const extendedItems = $derived([...galleryItems, ...galleryItems]);
+	const heroImages = $derived(data?.heroImages ?? []);
 
 	const sliderSpeed = 0.35;
 
@@ -168,6 +110,14 @@
 			container.removeEventListener('pointerleave', handlePointerUp);
 		};
 	});
+
+	let randomIndex = $state(0);
+
+	$effect(() => {
+		setTimeout(() => {
+			randomIndex = Math.floor(Math.random() * heroImages.length);
+		}, 0);
+	});
 </script>
 
 <svelte:head>
@@ -188,7 +138,9 @@
 	<div class="img-placeholder" style="position:absolute;inset:0;z-index:0;">
 		<div
 			style="position:absolute;inset:0;background:linear-gradient(135deg,#18181b 0%,#0a0a0a 60%,#1a1208 100%);"
-		></div>
+		>
+			<img src="/files/{heroImages[randomIndex]}" alt="Hero Slider" />
+		</div>
 	</div>
 
 	<div style="position:absolute;inset:0;background:rgba(0,0,0,0.55);z-index:1;"></div>
@@ -231,7 +183,7 @@
 	</div>
 </section>
 
-<section class="section" style="padding-top:4rem;">
+<section class="section pt-0! lg:pt-16!">
 	<div class="container">
 		<div
 			style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:2.5rem;"

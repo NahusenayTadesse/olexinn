@@ -59,6 +59,11 @@
 			icon: Images
 		},
 		{
+			title: 'Hero Images',
+			url: '/dashboard/hero-images',
+			icon: Images
+		},
+		{
 			title: 'Admin Panel',
 			url: '/dashboard/admin-panel',
 			icon: UserRoundCog,
@@ -101,7 +106,7 @@
 		</Sidebar.Group>
 	</Sidebar.Content>
 
-	<Sidebar.Footer class="flex flex-row border-t bg-background">
+	<!-- <Sidebar.Footer class="flex flex-row border-t bg-background">
 		<Sidebar.GroupLabel>
 			Powered By <a
 				href="https://nahusenaytadesse.vercel.app"
@@ -109,5 +114,5 @@
 				class="ml-1 hover:underline">NT</a
 			>
 		</Sidebar.GroupLabel>
-	</Sidebar.Footer>
+	</Sidebar.Footer> -->
 </Sidebar.Root>

@@ -167,3 +167,7 @@ export const venues = mysqlTable('venues', {
 export const brochure = mysqlTable('brochures', {
 	brochure: varchar('brochure', { length: 500 })
 });
+
+export const heroImages = mysqlTable('hero_images', {
+	imgUrl: varchar('img_url', { length: 500 })
+});

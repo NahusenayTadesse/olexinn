@@ -1,7 +1,14 @@
 import { loadFlash } from 'sveltekit-flash-message/server';
 
 import { db } from '$lib/server/db';
-import { events, genres, eventGenres, images as gallery, venues } from '$lib/server/db/schema';
+import {
+	events,
+	genres,
+	eventGenres,
+	images as gallery,
+	venues,
+	heroImages
+} from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
 
 const slugify = (value: string) =>
@@ -124,6 +131,8 @@ export const load = loadFlash(async () => {
 	const images = await db.select().from(gallery);
 
 	const [mainImage] = await db.select({ mainImage: gallery.mainImage }).from(gallery).limit(1);
+	const heroImageJSON = await db.select().from(heroImages);
+	const heroImagesList = heroImageJSON.map((img) => img.imgUrl);
 
 	const imagesList = images.map((img) => img.imgURL);
 
@@ -134,6 +143,7 @@ export const load = loadFlash(async () => {
 		filters: [{ value: 'all', label: 'All' }, ...entryFilters, ...genreFilters],
 		gallery: imagesList,
 		mainImage: mainImage?.mainImage,
-		venues: venuesList
+		venues: venuesList,
+		heroImages: heroImagesList
 	};
 });
